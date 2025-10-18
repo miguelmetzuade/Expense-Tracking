@@ -1,0 +1,127 @@
+@startuml UserInteraction
+
+class UserInterfaceController
+
+interface IUserInterface
+
+interface ILoginInterface extends IUserInterface {
+    + displayLoginScreen()
+    + displayMenuOptions()
+    + displaySignIn()
+    + displaySignUp()
+    + inputUserName(userName: String)
+    + inputPassword(password: String)
+    + signIn()
+    + signUp()
+    + displayLoginSuccess()
+    + displayErrorExistentUser()
+    + displayErrorInexistentUser()
+    + displayErrorLoginFailure(errorMessage: String)
+}
+
+interface IHomeInterface extends IUserInterface {
+    + displayWelcomeMessage(userName: String)
+    + displayHome()
+    + displayMenuOptions()
+    + selectWallet()
+    + selectNewExpense()
+    + selectQueryExpenses()
+    + selectLogOut()
+    + selectAccountDetails()
+    + selectExpensesAnalysis()
+}
+
+interface IWalletInterface extends IUserInterface {
+    + displayWalletMenu()
+    + displayPaymentMethods(paymentMethods: ArrayList<PaymentMethod>)
+    + displayAddPaymentMethod()
+    + displayRemovePaymentMethod()
+    + displayErrorAddingPaymentMethod(errorMessage: String)
+    + displayErrorRemovingPaymentMethod(errorMessage: String)
+}
+
+interface INewExpenseInterface extends IUserInterface {
+    + displayNewExpenseMenu()
+    + inputExpenseDetails()
+    + inputExpenseTitle(title: String)
+    + inputExpenseCost(cost: Float)
+    + inputExpenseDate(date: Date)
+    + inputExpenseTime(time: Time)
+    + displayPaymentMethods(paymentMethods: ArrayList<PaymentMethod>)
+    + inputExpensePaymentMethod(paymentMethod: Integer)
+    + inputPlace(place: String)
+    + submitExpense()
+    + displayExpenseAddedSuccess()
+    + displayErrorAddingExpense(errorMessage: String)
+}
+
+interface IQueryExpensesInterface extends IUserInterface {
+    + displayQueryExpensesMenu()
+    + displayLastExpenses(expenses: ArrayList<ExpenseRecord>)
+    + selectQueryExpenses()
+    + inputQueryParameters()
+    + inputQueryDateFrom(date: Date)
+    + inputQueryDateTo(date: Date)
+    + inputQueryPlace(place: String)
+    + inputQueryCostGT(costGT: Float)
+    + inputQueryCostLT(costLT: Float)
+    + displayPaymentMethods(paymentMethods: ArrayList<PaymentMethod>)
+    + inputQueryPaymentMethod(paymentMethod: Integer)
+    + submitExpenseQuery()
+    + displayQueriedExpenses(expenses: ArrayList<ExpenseRecord>)
+    + displayErrorQueryingExpenses(errorMessage: String)
+}
+
+interface IExpensesAnalysisInterface extends IUserInterface {
+    + displayExpensesAnalysisMenu()
+    + displayExpensesSummary(totalExpenses: Float, averageExpense: Float,
+                             highestExpense: Float, lowestExpense: Float)
+}
+
+class LoginInterfaceCLI extends ILoginInterface {
+    - userNameInput: String
+    - passwordInput: String
+---
+    + LoginInterfaceCLI()
+}
+
+class HomeInterfaceCLI extends IHomeInterface {
+    - userName: String
+---
+    + HomeInterfaceCLI()
+    + setUserName(userName: String)
+}
+
+class WalletInterfaceCLI extends IWalletInterface {
+---
+    + WalletInterfaceCLI()
+}
+
+class NewExpenseInterfaceCLI extends INewExpenseInterface {
+---
+    + NewExpenseInterfaceCLI()
+}
+
+class QueryExpensesInterfaceCLI extends IQueryExpensesInterface {
+    + QueryExpensesInterfaceCLI()
+}
+
+class ExpensesAnalysisInterfaceCLI extends IExpensesAnalysisInterface {
+    + ExpensesAnalysisInterfaceCLI()
+}
+
+UserInterfaceController <-- IUserInterface
+' IUserInterface <|-- ILoginInterface
+' ILoginInterface <|-- LoginInterfaceCLI
+' IUserInterface <|-- IHomeInterface
+' IHomeInterface <|-- HomeInterfaceCLI
+' IUserInterface <|-- IWalletInterface
+' IWalletInterface <|-- WalletInterfaceCLI
+' IUserInterface <|-- INewExpenseInterface
+' INewExpenseInterface <|-- NewExpenseInterfaceCLI
+' IUserInterface <|-- IQueryExpensesInterface
+' IQueryExpensesInterface <|-- QueryExpensesInterfaceCLI
+' IUserInterface <|-- IExpensesAnalysisInterface
+' IExpensesAnalysisInterface <|-- ExpensesAnalysisInterfaceCLI
+
+@enduml

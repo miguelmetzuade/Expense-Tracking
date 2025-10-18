@@ -1,0 +1,75 @@
+@startuml DBManager
+
+interface DBRecord {
+}
+
+class DBRecordExpense extends DBRecord {
+ - expense: ExpenseRecord
+ - timestamp: Timestamp
+---
+ + DBRecordExpense(expense: ExpenseRecord)
+}
+
+class DBRecordUser extends DBRecord {
+ - user: User
+ - timestamp: Timestamp
+---
+ + DBRecordUser(user: User)
+}
+
+interface DBQuery {
+}
+
+class DBQueryExpense extends DBQuery {
+ - startDate: Date
+ - endDate: Date
+ - costGT: Float
+ - costLT: Float
+ - place: String
+---
+ + DBQueryExpense(startDate: Date, endDate: Date, costGT: Float,
+                  costLT: Float, place: String)
+}
+
+class DBQueryUser extends DBQuery {
+ - username: String
+---
+ + DBQueryUser(username: String)
+}
+
+interface IDatabaseManager {
+ + connect()
+ + disconnect()
+ + executeQuery(query: DBQuery): ArrayList<DBRecord>
+ + insertRecord(record: DBRecord)
+}
+
+interface IFilesDatabaseManager extends IDatabaseManager
+
+interface INoSQLManager extends IDatabaseManager
+
+interface ISQLManager extends IDatabaseManager
+
+class FilesDatabaseManager extends IFilesDatabaseManager
+
+class MongoDBManager extends INoSQLManager
+
+class SQLServerManager extends ISQLManager
+
+
+IDatabaseManager <-- DBRecord
+IDatabaseManager <-- DBQuery
+
+' DBRecord <|-- DBRecordExpense
+' DBQuery <|-- DBQueryExpense
+
+' IDatabaseManager <|-- IFilesDatabaseManager
+' IFilesDatabaseManager <|-- FilesDatabaseManager
+' IDatabaseManager <|-- INoSQLManager
+' INoSQLManager <|-- MongoDBManager
+' IDatabaseManager <|-- ISQLManager
+' ISQLManager <|-- SQLServerManager
+
+System [1] <-- [1] IDatabaseManager
+
+@enduml

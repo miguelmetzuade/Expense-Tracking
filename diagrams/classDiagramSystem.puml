@@ -1,0 +1,27 @@
+@startuml System
+
+class System {
+ - account: Account
+ - loginSystem: ILoginSystem
+ - userInterfaceController: UserInterfaceController
+ - databaseManager: IDatabaseManager
+ - analysisModule: AnalysisModule
+---
+ + System(account: Account, loginSystem: ILoginSystem,
+          userInterfaceController: UserInterfaceController,
+          databaseManager: IDatabaseManager,
+          analysisModule: AnalysisModule)
+}
+
+class AnalysisModule {
+ + AnalysisModule()
+ + createAnalysisReport(expensesSet: ExpensesSet) : String
+}
+
+System [1] <-- [1] Account
+System [1] <-- [1] ILoginSystem
+System [1] <-- [1] UserInterfaceController
+System [1] <-- [1] IDatabaseManager
+System [1] <-- [1] AnalysisModule
+
+@enduml

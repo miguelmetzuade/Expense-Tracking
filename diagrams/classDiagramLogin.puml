@@ -1,0 +1,53 @@
+@startuml Login
+
+interface ILoginSystem {
+ + login(username: String, password: String): Boolean
+ + logout(userId: String): Boolean
+ + register(username: String, password: String): Boolean
+ - checkUserName(): Boolean
+ - checkUserCredentials(): Boolean
+}
+
+class LoginSystem extends ILoginSystem {
+ - LoginUser: LoginUser
+ - User: User
+---
+ + LoginSystem()
+}
+
+class LoginUser {
+ - userName: String
+ - password: String
+---
+ + LoginUser()
+ + setUserName(userName: String)
+ + setPassword(password: String)
+ + getUserName(): String
+ + getPassword(): String
+}
+
+class User {
+ - name: String
+ - id: Integer
+ - username: String
+ - password: String
+ - mailAdress: String
+ - phoneNumber: Integer
+---
+ + User(name: String, id: Integer, username: String,
+        password: String, mailAdress: String, phoneNumber: Integer)
+ + getName(): String
+ + getId(): Integer
+ + getUsername(): String
+ + getEmailAdress(): String
+ + getPhoneNumber(): Integer
+ + setEmailAdress(mailAdress: String)
+ + setPhoneNumber(phoneNumber: Integer)
+}
+
+
+' ILoginSystem <|-- LoginSystem
+LoginSystem [1] <-- [*] LoginUser
+LoginSystem [1] <-- [*] User
+
+@enduml

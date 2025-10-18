@@ -1,0 +1,100 @@
+@startuml overview
+
+class Wallet
+class PaymentMethod
+enum PaymentPlatform
+enum PaymentSource
+
+class ExpensesSet
+class ExpenseRecord
+
+interface ILoginSystem
+class LoginSystem extends ILoginSystem
+class LoginUser
+class User
+
+class Account
+
+interface IUserInterface
+interface ILoginInterface extends IUserInterface
+interface IHomeInterface extends IUserInterface
+interface IWalletInterface extends IUserInterface
+interface INewExpenseInterface extends IUserInterface
+interface IQueryExpensesInterface extends IUserInterface
+interface IExpensesAnalysisInterface extends IUserInterface
+
+class LoginInterfaceCLI extends ILoginInterface
+class HomeInterfaceCLI extends IHomeInterface
+class WalletInterfaceCLI extends IWalletInterface
+class NewExpenseInterfaceCLI extends INewExpenseInterface
+class QueryExpensesInterfaceCLI extends IQueryExpensesInterface
+class ExpensesAnalysisInterfaceCLI extends IExpensesAnalysisInterface
+
+class UserInterfaceController
+
+interface IDatabaseManager
+interface IFilesDatabaseManager extends IDatabaseManager
+interface INoSQLManager extends IDatabaseManager
+interface ISQLManager extends IDatabaseManager
+class FilesDatabaseManager extends IFilesDatabaseManager
+class MongoDBManager extends INoSQLManager
+class SQLServerManager extends ISQLManager
+interface DBRecord
+interface DBQuery
+class DBRecordExpense extends DBRecord
+class DBRecordUser extends DBRecord
+class DBQueryExpense extends DBQuery
+class DBQueryUser extends DBQuery
+
+class AnalysisModule
+
+class System
+
+PaymentMethod o-- PaymentSource
+PaymentMethod o-- PaymentPlatform
+Wallet [*] <-- [*] PaymentMethod
+
+ExpensesSet [1] <-- [*] ExpenseRecord
+
+' ILoginSystem <|-- LoginSystem
+LoginSystem [1] <-- [*] LoginUser
+LoginSystem [1] <-- [*] User
+
+Account o-- User
+Account [1] o-- [1] Wallet
+Account [1] o-- [1] ExpensesSet
+
+UserInterfaceController <-- IUserInterface
+' IUserInterface <|-- ILoginInterface
+' ILoginInterface <|-- LoginInterfaceCLI
+' IUserInterface <|-- IHomeInterface
+' IHomeInterface <|-- HomeInterfaceCLI
+' IUserInterface <|-- IWalletInterface
+' IWalletInterface <|-- WalletInterfaceCLI
+' IUserInterface <|-- INewExpenseInterface
+' INewExpenseInterface <|-- NewExpenseInterfaceCLI
+' IUserInterface <|-- IQueryExpensesInterface
+' IQueryExpensesInterface <|-- QueryExpensesInterfaceCLI
+' IUserInterface <|-- IExpensesAnalysisInterface
+' IExpensesAnalysisInterface <|-- ExpensesAnalysisInterfaceCLI
+
+IDatabaseManager <-- DBRecord
+IDatabaseManager <-- DBQuery
+' IDatabaseManager <|-- IFilesDatabaseManager
+' IFilesDatabaseManager <|-- FilesDatabaseManager
+' IDatabaseManager <|-- INoSQLManager
+' INoSQLManager <|-- MongoDBManager
+' IDatabaseManager <|-- ISQLManager
+' ISQLManager <|-- SQLServerManager
+' DBRecord <|-- DBRecordExpense
+' DBRecord <|-- DBRecordUser
+' DBQuery <|-- DBQueryExpense
+' DBQuery <|-- DBQueryUser
+
+System [1] <-- [1] Account
+System [1] <-- [1] ILoginSystem
+System [1] <-- [1] UserInterfaceController
+System [1] <-- [1] IDatabaseManager
+System [1] <-- [1] AnalysisModule
+
+@enduml

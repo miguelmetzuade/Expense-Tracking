@@ -1,0 +1,85 @@
+@startuml Account
+
+enum PaymentPlatform {
+ MERCADOPAGO
+ MODO
+ PHISICAL_CARD
+ CASH
+}
+enum PaymentSource {
+ CASH
+ MONEY_IN_ACCOUNT
+ DEBIT_CARD
+ CREDIT_CARD
+}
+class PaymentMethod {
+ - platform: PaymentPlatform
+ - source: PaymentSource
+---
+ + PaymentMethod(platform: PaymentPlatform, source: PaymentSource)
+ + getPlatform(): PaymentPlatform
+ + getSource(): PaymentSource
+}
+
+class Wallet {
+ - paymentMethods: ArrayList<PaymentMethod>
+---
+ + Wallet()
+ + addPaymentMethod(paymentMethod: PaymentMethod)
+ + removePaymentMethod(paymentMethod: PaymentMethod)
+ + getPaymentMethods(): ArrayList<PaymentMethod>
+}
+
+class ExpenseRecord {
+ - place: String
+ - cost: Float
+ - date: Date
+ - time: Time
+ - paymentMethod: PaymentMethod
+---
+ + ExpenseRecord(place: String, cost: Float, date: Date,
+                    time: Time, paymentMethod: PaymentMethod)
+ + getPlace(): String
+ + getCost(): Float
+ + getDate(): Date
+ + getTime(): Time
+ + getPaymentMethod(): PaymentMethod
+}
+
+class ExpensesSet {
+ - expensesList: ArrayList<ExpenseRecord>
+---
+ + ExpensesSet()
+ + addExpense(expense: ExpenseRecord)
+ + searchExpenses(dateFrom: Date, dateTo: Date, place: String, costGT: Float, costLT: Float,
+                    paymentMethod: PaymentMethod)
+ + getExpensesList(): ArrayList<ExpenseRecord>
+ + getLastNExpenses(n: Integer): ArrayList<ExpenseRecord>
+}
+
+class User {
+}
+
+class Account {
+ - user: User
+ - wallet: Wallet
+ - expensesSet: ExpensesSet
+---
+ + Account(user: User)
+ + getUser(): User
+ + getWallet(): Wallet
+ + getExpensesSet(): ExpensesSet
+}
+
+
+PaymentMethod o-- PaymentSource
+PaymentMethod o-- PaymentPlatform
+Wallet [*] <-- [*] PaymentMethod
+
+ExpensesSet [1] <-- [*] ExpenseRecord
+
+Account o-- User
+Account [1] o-- [1] Wallet
+Account [1] o-- [1] ExpensesSet
+
+@enduml
